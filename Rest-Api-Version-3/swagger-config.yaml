@@ -1,0 +1,107 @@
+openapi: 3.0.1
+info:
+  title: API Rest Gestor de Citas
+  description: >
+    El servidor backend es responsable de manejar las solicitudes HTTP,
+    interactuar con la base de datos y enviar respuestas al frontend.
+    La API REST implementa varias rutas para crear, leer, actualizar y eliminar datos.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /citas:
+    get:
+      summary: Obtener todas las citas
+      description: Devuelve una lista de todas las citas.
+      responses:
+        '200':
+          description: Lista de citas obtenida con éxito
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cita'
+    post:
+      summary: Crear una nueva cita
+      description: Crea una nueva cita con los datos proporcionados.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cita'
+      responses:
+        '201':
+          description: Cita creada con éxito
+  /citas/{id}:
+    get:
+      summary: Obtener una cita por ID
+      description: Devuelve una cita específica basada en su ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Cita obtenida con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cita'
+        '404':
+          description: Cita no encontrada
+    put:
+      summary: Actualizar una cita por ID
+      description: Actualiza los detalles de una cita específica.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cita'
+      responses:
+        '200':
+          description: Cita actualizada con éxito
+        '404':
+          description: Cita no encontrada
+    delete:
+      summary: Eliminar una cita por ID
+      description: Elimina una cita específica basada en su ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Cita eliminada con éxito
+        '404':
+          description: Cita no encontrada
+components:
+  schemas:
+    Cita:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID de la cita
+        fecha:
+          type: string
+          format: date-time
+          description: Fecha y hora de la cita
+        paciente:
+          type: string
+          description: Nombre del paciente
+        motivo:
+          type: string
+          description: Motivo de la cita
